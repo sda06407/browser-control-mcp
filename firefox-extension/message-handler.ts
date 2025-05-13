@@ -24,6 +24,9 @@ export class MessageHandler {
       case "open-tab":
         await this.openUrl(req.correlationId, req.url);
         break;
+      case "reload-tab":
+        await this.reloadTabs(req.correlationId, req.tabIds);
+        break;
       case "close-tabs":
         await this.closeTabs(req.correlationId, req.tabIds);
         break;
@@ -69,6 +72,14 @@ export class MessageHandler {
     });
   }
 
+  private async reloadTabs(correlationId: string, tabIds: number[]): Promise<void> {
+    await browser.tabs.reload(tabIds);
+    await this.client.sendResourceToServer({
+      resource: "tabs-reload",
+      correlationId,
+    });
+  }
+  
   private async closeTabs(correlationId: string, tabIds: number[]): Promise<void> {
     await browser.tabs.remove(tabIds);
     await this.client.sendResourceToServer({
