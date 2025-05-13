@@ -51,6 +51,18 @@ mcpServer.tool(
 );
 
 mcpServer.tool(
+  "reload-browser-tabs",
+  "Reload tabs in the user's browser by tab IDs",
+  { tabIds: z.array(z.number()) },
+  async ({ tabIds }) => {
+    await browserApi.reloadTabs(tabIds);
+    return {
+      content: [{ type: "text", text: "Reloaded tabs" }],
+    };
+  }
+);
+
+mcpServer.tool(
   "get-list-of-open-tabs",
   "Get the list of open tabs in the user's browser",
   {},
