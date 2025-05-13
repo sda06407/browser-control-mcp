@@ -107,6 +107,14 @@ export class BrowserAPI {
     await this.waitForResponse(correlationId, "tabs-closed");
   }
 
+  async reloadTabs(tabIds: number[]) {
+    const correlationId = this.sendMessageToExtension({
+      cmd: "reload-tabs",
+      tabIds,
+    });
+    await this.waitForResponse(correlationId, "tabs-reloaded");
+  }
+  
   async getTabList(): Promise<BrowserTab[]> {
     const correlationId = this.sendMessageToExtension({
       cmd: "get-tab-list",
