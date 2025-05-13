@@ -21,6 +21,11 @@ export const AVAILABLE_TOOLS: ToolInfo[] = [
     description: "Allows the MCP server to close browser tabs"
   },
   {
+    id: "reload-browser-tabs",
+    name: "Reload Browser Tabs",
+    description: "Allows the MCP server to reload browser tabs"
+  },
+  {
     id: "get-list-of-open-tabs",
     name: "Get List of Open Tabs",
     description: "Allows the MCP server to get a list of all open tabs"
@@ -51,6 +56,7 @@ export const AVAILABLE_TOOLS: ToolInfo[] = [
 export const COMMAND_TO_TOOL_ID: Record<string, string> = {
   "open-tab": "open-browser-tab",
   "close-tabs": "close-browser-tabs",
+  "reload-tabs": "reload-browser-tabs",
   "get-tab-list": "get-list-of-open-tabs",
   "get-browser-recent-history": "get-recent-browser-history",
   "get-tab-content": "get-tab-web-content",
