@@ -24,7 +24,7 @@ export class MessageHandler {
       case "open-tab":
         await this.openUrl(req.correlationId, req.url);
         break;
-      case "reload-tab":
+      case "reload-tabs":
         await this.reloadTabs(req.correlationId, req.tabIds);
         break;
       case "close-tabs":
