@@ -112,7 +112,7 @@ export class BrowserAPI {
       cmd: "reload-tabs",
       tabIds,
     });
-    await this.waitForResponse(correlationId, "tabs-reloaded");
+    await this.waitForResponse(correlationId, "tabs-reload");
   }
   
   async getTabList(): Promise<BrowserTab[]> {
