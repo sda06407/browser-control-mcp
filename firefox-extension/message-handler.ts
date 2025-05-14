@@ -123,39 +123,57 @@ export class MessageHandler {
   ): Promise<void> {
     const MAX_CONTENT_LENGTH = 50_000;
     const results = await browser.tabs.executeScript(tabId, {
-      code: `
-      (function () {
-        function getLinks() {
-          const linkElements = document.querySelectorAll('a[href]');
-          return Array.from(linkElements).map(el => ({
-            url: el.href,
-            text: el.innerText.trim() || el.getAttribute('aria-label') || el.getAttribute('title') || ''
-          })).filter(link => link.text !== '' && link.url.startsWith('https://') && !link.url.includes('#'));
-        }
-
-        function getTextContent() {
-          let isTruncated = false;
-          let text = document.body.innerText.substring(${offset || 0});
-          if (text.length > ${MAX_CONTENT_LENGTH}) {
-            text = text.substring(0, ${MAX_CONTENT_LENGTH});
-            isTruncated = true;
-          }
-          return {
-            text, isTruncated
-          }
-        }
-
-        const textContent = getTextContent();
-
-        return {
-          links: getLinks(),
-          fullText: textContent.text,
-          isTruncated: textContent.isTruncated,
-          totalLength: document.body.innerText.length
-        };
-      })();
-    `,
-    });
+        code: `
+          (function () {
+            function getLinks() {
+              const linkElements = document.querySelectorAll('a[href]');
+              return Array.from(linkElements).map(el => ({
+                url: el.href,
+                text: el.innerText.trim() || el.getAttribute('aria-label') || el.getAttribute('title') || ''
+              })).filter(link => link.text !== '' && link.url.startsWith('https://') && !link.url.includes('#'));
+            }
+    
+            function getTextContent() {
+              let isTruncated = false;
+              let text = '';
+              let tempDiv = document.createElement('div');
+              tempDiv.innerHTML = document.body.innerHTML;
+    
+              // 移除 script 標籤
+              let scripts = tempDiv.getElementsByTagName('script');
+              while (scripts.length > 0) {
+                scripts[0].parentNode.removeChild(scripts[0]);
+              }
+    
+              // 移除 style 標籤
+              let styles = tempDiv.getElementsByTagName('style');
+              while (styles.length > 0) {
+                styles[0].parentNode.removeChild(styles[0]);
+              }
+    
+              // 取得處理後的 HTML 內容
+              text = tempDiv.innerHTML;
+    
+              // 判斷是否超過 MAX_CONTENT_LENGTH，但實際上不截斷
+              if (tempDiv.innerHTML.length > ${MAX_CONTENT_LENGTH}) {
+                isTruncated = true; // 如果超過，則設定為 true
+              }
+    
+              return {
+                text, isTruncated
+              }
+            }
+    
+            const textContent = getTextContent();
+            return {
+              links: getLinks(),
+              fullText: textContent.text,
+              isTruncated: textContent.isTruncated,
+              totalLength: document.body.innerHTML.length // 修改這裡，取得 HTML 的總長度
+            };
+          })();
+        `
+      });
     const { isTruncated, fullText, links, totalLength } = results[0];
     await this.client.sendResourceToServer({
       resource: "tab-content",
