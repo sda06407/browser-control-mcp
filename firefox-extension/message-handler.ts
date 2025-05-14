@@ -73,7 +73,7 @@ export class MessageHandler {
   }
 
   private async reloadTabs(correlationId: string, tabId: number): Promise<void> {
-    await browser.tabs.reload(tabId);
+    await browser.tabs.reload(tabId, { bypassCache: true });
     await this.client.sendResourceToServer({
       resource: "tabs-reload",
       correlationId,
