@@ -55,6 +55,10 @@ export interface TabsClosedExtensionMessage extends ExtensionMessageBase {
   resource: "tabs-closed";
 }
 
+export interface TabsReloadExtensionMessage extends ExtensionMessageBase {
+  resource: "tabs-reload";
+}
+
 export type ExtensionMessage =
   | TabContentExtensionMessage
   | TabsExtensionMessage
@@ -62,7 +66,8 @@ export type ExtensionMessage =
   | BrowserHistoryExtensionMessage
   | ReorderedTabsExtensionMessage
   | FindHighlightExtensionMessage
-  | TabsClosedExtensionMessage;
+  | TabsClosedExtensionMessage
+  | TabsReloadExtensionMessage;
 
 export interface ExtensionError {
   correlationId: string;
