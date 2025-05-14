@@ -12,6 +12,11 @@ export interface CloseTabsServerMessage extends ServerMessageBase {
   tabIds: number[];
 }
 
+export interface ReloadTabsServerMessage extends ServerMessageBase {
+  cmd: "reload-tabs";
+  tabIds: number[];
+}
+
 export interface GetTabListServerMessage extends ServerMessageBase {
   cmd: "get-tab-list";
 }
