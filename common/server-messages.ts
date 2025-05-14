@@ -46,6 +46,7 @@ export interface FindHighlightServerMessage extends ServerMessageBase {
 export type ServerMessage =
   | OpenTabServerMessage
   | CloseTabsServerMessage
+  | ReloadTabsServerMessage
   | GetTabListServerMessage
   | GetBrowserRecentHistoryServerMessage
   | GetTabContentServerMessage
